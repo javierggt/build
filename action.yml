@@ -66,11 +66,12 @@ runs:
     shell: bash
     run: |
       pwd
-      ls -a
+      echo $GITHUB_ACTION_PATH
+      ls $GITHUB_ACTION_PATH
   - name: Show Inputs
     shell: bash -l {0}
     run: |
-      echo OS: ${{ inputs.os }}
+      echo OS: ${{ inputs.platform }}
       echo repository: \'${{ inputs.repository }}\'
       echo tag: \'${{ inputs.tag }}\'
       echo noarch: \'${{ inputs.noarch }}\'
