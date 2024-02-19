@@ -50,13 +50,18 @@ inputs:
     required: true
 branding:
   color: "black"
-  icon: "code"
+  icon: "package"
 
 runs:
   using: "composite"
   steps:
   - name: Fetch
     uses: actions/checkout@v3
+  - name: Show Directory
+    shell: bash
+    run: |
+      pwd
+      ls -a
   - name: Show Inputs
     if: ${{ (matrix.os == 'ubuntu-latest') || !inputs.noarch }}
     shell: bash -l {0}
