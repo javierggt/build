@@ -63,10 +63,9 @@ runs:
       pwd
       ls -a
   - name: Show Inputs
-    if: ${{ (matrix.os == 'ubuntu-latest') || !inputs.noarch }}
     shell: bash -l {0}
     run: |
-      echo OS: ${{ matrix.os }}
+      echo OS: ${{ inputs.os }}
       echo repository: \'${{ inputs.repository }}\'
       echo tag: \'${{ inputs.tag }}\'
       echo noarch: \'${{ inputs.noarch }}\'
