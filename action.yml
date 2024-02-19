@@ -124,11 +124,11 @@ runs:
   - name: Build Package
     run: |
       arch_arg=`if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then echo; else echo '--arch-specific'; fi`
-      python ${GITHUB_ACTION_PATH}/build/files/build.py $arch_arg ${{ inputs.repository }} --tag ${{ inputs.tag }} --python ${{ inputs.python_version }} --numpy ${{ inputs.numpy_version }} --skare3-branch ${{ inputs.skare3_branch }} -c https://ska:${{ inputs.CONDA_PASSWORD }}@cxc.cfa.harvard.edu/mta/ASPECT/ska3-conda/${{ inputs.channel }} -c conda-forge
+      python ${GITHUB_ACTION_PATH}/files/build.py $arch_arg ${{ inputs.repository }} --tag ${{ inputs.tag }} --python ${{ inputs.python_version }} --numpy ${{ inputs.numpy_version }} --skare3-branch ${{ inputs.skare3_branch }} -c https://ska:${{ inputs.CONDA_PASSWORD }}@cxc.cfa.harvard.edu/mta/ASPECT/ska3-conda/${{ inputs.channel }} -c conda-forge
     env:
       CONDA_PASSWORD: ${{ inputs.CONDA_PASSWORD }}
       GIT_USERNAME: chandra-xray
-      GIT_ASKPASS: ${{ github.action_path }}/build/files/git_pass.py
+      GIT_ASKPASS: ${{ github.action_path }}/files/git_pass.py
       GIT_PASSWORD: ${{ inputs.CHANDRA_XRAY_TOKEN }}
   - name: Summary
     run: |
