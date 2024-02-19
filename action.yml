@@ -60,8 +60,6 @@ branding:
 runs:
   using: "composite"
   steps:
-  - name: Fetch
-    uses: actions/checkout@v3
   - name: Show Directory
     shell: bash
     run: |
@@ -82,10 +80,66 @@ runs:
       echo CONDA_PASSWORD: \'${{ inputs.CONDA_PASSWORD }}\'
       echo CHANDRA_XRAY_TOKEN: \'${{ inputs.CHANDRA_XRAY_TOKEN }}\'
       echo token: \'${{ inputs.token }}\'
+  - name: Show Inputs Summary
+    shell: bash -l {0}
+    run: |
+      echo "## Inputs:" >> $GITHUB_STEP_SUMMARY
+      echo OS: ${{ inputs.platform }} >> $GITHUB_STEP_SUMMARY
+      echo repository: \'${{ inputs.repository }}\' >> $GITHUB_STEP_SUMMARY
+      echo tag: \'${{ inputs.tag }}\' >> $GITHUB_STEP_SUMMARY
+      echo noarch: \'${{ inputs.noarch }}\' >> $GITHUB_STEP_SUMMARY
+      echo python_version: \'${{ inputs.python_version }}\' >> $GITHUB_STEP_SUMMARY
+      echo numpy_version: \'${{ inputs.numpy_version }}\' >> $GITHUB_STEP_SUMMARY
+      echo miniconda_version: \'${{ inputs.miniconda_version }}\' >> $GITHUB_STEP_SUMMARY
+      echo skare3_branch: \'${{ inputs.skare3_branch }}\' >> $GITHUB_STEP_SUMMARY
+      echo CONDA_PASSWORD: \'${{ inputs.CONDA_PASSWORD }}\' >> $GITHUB_STEP_SUMMARY
+      echo CHANDRA_XRAY_TOKEN: \'${{ inputs.CHANDRA_XRAY_TOKEN }}\' >> $GITHUB_STEP_SUMMARY
+      echo token: \'${{ inputs.token }}\' >> $GITHUB_STEP_SUMMARY
   - name: Fetch Skare3
     uses: actions/checkout@v3
     with:
       repository: sot/skare3
       ref: ${{ inputs.skare3_branch }}
       path: skare3
-
+  - name: Update Conda Environment
+    run:
+      conda env update -n conda-build -f ./skare3/build-environment.yml
+  - name: Install ska_helpers
+    run: |
+      conda search ska_helpers
+      err=$?
+      if [ !$err ]
+      then ${CONDA_EXE} install ska_helpers
+      fi
+      conda search testr
+      err=$?
+      if [ !$err ]
+      then ${CONDA_EXE} install testr
+      fi
+  - name: Env List
+    run: conda list
+  - name: Build Package
+    run: |
+      arch_arg=`if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then echo; else echo '--arch-specific'; fi`
+      python ${GITHUB_ACTION_PATH}/build/files/build.py $arch_arg ${{ inputs.repository }} --tag ${{ inputs.tag }} --python ${{ inputs.python_version }} --numpy ${{ inputs.numpy_version }} --skare3-branch ${{ inputs.skare3_branch }} -c https://ska:${{ inputs.CONDA_PASSWORD }}@cxc.cfa.harvard.edu/mta/ASPECT/ska3-conda/${{ inputs.channel }} -c conda-forge
+    env:
+      CONDA_PASSWORD: ${{ inputs.CONDA_PASSWORD }}
+      GIT_USERNAME: chandra-xray
+      GIT_ASKPASS: ${{ github.action_path }}/build/files/git_pass.py
+      GIT_PASSWORD: ${{ inputs.CHANDRA_XRAY_TOKEN }}
+  - name: Summary
+    run: |
+      files=`find  builds/noarch/ builds/linux-64/ builds/osx-64/ builds/win-64/ -not -name \*repodata\* -not -name index.html -not -name .ensure-non-empty-dir -type f`
+      echo "## Packages Built:" >> $GITHUB_STEP_SUMMARY
+      for f in $files; do echo "- $f" >> $GITHUB_STEP_SUMMARY; done;
+  - name: Save package
+    uses: actions/upload-artifact@v2.2.4
+    with:
+      name: conda-package
+      path: |
+        builds/noarch/
+        builds/linux-64/
+        builds/osx-64/
+        builds/win-64/
+        !builds/*/*repodata*
+        !builds/*/index.html
