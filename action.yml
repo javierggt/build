@@ -139,7 +139,7 @@ runs:
       channels: https://ska:${{ inputs.CONDA_PASSWORD }}@cxc.cfa.harvard.edu/mta/ASPECT/ska3-conda/${{ steps.arguments.outputs.channel }},conda-forge
   - name: List Conda Environment
     shell: bash -l {0}
-    run:
+    run: |
       conda list
       conda list python
   - name: Update Conda Environment
@@ -148,7 +148,7 @@ runs:
       conda env update -n conda-build -f ./skare3/build-environment.yml
   - name: List Conda Environment
     shell: bash -l {0}
-    run:
+    run: |
       conda list
       conda list python
   - name: Install ska_helpers
