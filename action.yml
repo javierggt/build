@@ -61,6 +61,8 @@ runs:
   using: "composite"
   steps:
 
+  # the following action checks the client_payload if this is in a repository dispatch
+  # sets the boolean arguments properly
   - id: argument_parser
     uses: skare3/check-arguments@main
     with:
@@ -85,6 +87,7 @@ runs:
         - name: platform
           default: ${{ inputs.platform }}
   - id: arguments
+    shell: bash -l {0}
     run: |
       echo "repository: ${{ fromJson(steps.argument_parser.outputs.arguments).repository }}" >> $GITHUB_OUTPUT
       echo "tag: ${{ fromJson(steps.argument_parser.outputs.arguments).tag }}" >> $GITHUB_OUTPUT
@@ -95,7 +98,8 @@ runs:
       echo "skare3_branch: ${{ fromJson(steps.argument_parser.outputs.arguments).skare3_branch }}" >> $GITHUB_OUTPUT
       echo "channel: ${{ fromJson(steps.argument_parser.outputs.arguments).channel }}" >> $GITHUB_OUTPUT
       echo "platform: ${{ fromJson(steps.argument_parser.outputs.arguments).platform }}" >> $GITHUB_OUTPUT
-  - run: |
+  - shell: bash -l {0}
+    run: |
       echo "## Arguments:" >> $GITHUB_STEP_SUMMARY
       echo "repository: ${{ steps.arguments.outputs.repository }}" >> $GITHUB_STEP_SUMMARY
       echo "tag: ${{ steps.arguments.outputs.tag }}" >> $GITHUB_STEP_SUMMARY
