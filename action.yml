@@ -60,6 +60,52 @@ branding:
 runs:
   using: "composite"
   steps:
+
+  - id: argument_parser
+    uses: skare3/check-arguments@main
+    with:
+      arguments: |
+        - name: repository
+          default: ${{ inputs.repository }}
+        - name: tag
+          default: ${{ inputs.tag }}
+        - name: noarch
+          type: boolean
+          default: ${{ inputs.noarch }}
+        - name: python_version
+          default: ${{ inputs.python_version }}
+        - name: numpy_version
+          default: ${{ inputs.numpy_version }}
+        - name: miniconda_version
+          default: ${{ inputs.miniconda_version }}
+        - name: skare3_branch
+          default: ${{ inputs.skare3_branch }}
+        - name: channel
+          default: ${{ inputs.channel }}
+        - name: platform
+          default: ${{ inputs.platform }}
+  - id: arguments
+    run: |
+      echo "repository: ${{ fromJson(steps.argument_parser.outputs.arguments).repository }}" >> $GITHUB_OUTPUT
+      echo "tag: ${{ fromJson(steps.argument_parser.outputs.arguments).tag }}" >> $GITHUB_OUTPUT
+      echo "noarch: ${{ fromJson(steps.argument_parser.outputs.arguments).noarch }}" >> $GITHUB_OUTPUT
+      echo "python_version: ${{ fromJson(steps.argument_parser.outputs.arguments).python_version }}" >> $GITHUB_OUTPUT
+      echo "numpy_version: ${{ fromJson(steps.argument_parser.outputs.arguments).numpy_version }}" >> $GITHUB_OUTPUT
+      echo "miniconda_version: ${{ fromJson(steps.argument_parser.outputs.arguments).miniconda_version }}" >> $GITHUB_OUTPUT
+      echo "skare3_branch: ${{ fromJson(steps.argument_parser.outputs.arguments).skare3_branch }}" >> $GITHUB_OUTPUT
+      echo "channel: ${{ fromJson(steps.argument_parser.outputs.arguments).channel }}" >> $GITHUB_OUTPUT
+      echo "platform: ${{ fromJson(steps.argument_parser.outputs.arguments).platform }}" >> $GITHUB_OUTPUT
+  - run: |
+      echo "## Arguments:" >> $GITHUB_STEP_SUMMARY
+      echo "repository: ${{ steps.arguments.outputs.repository }}" >> $GITHUB_STEP_SUMMARY
+      echo "tag: ${{ steps.arguments.outputs.tag }}" >> $GITHUB_STEP_SUMMARY
+      echo "noarch: ${{ steps.arguments.outputs.noarch }}" >> $GITHUB_STEP_SUMMARY
+      echo "python_version: ${{ steps.arguments.outputs.python_version }}" >> $GITHUB_STEP_SUMMARY
+      echo "numpy_version: ${{ steps.arguments.outputs.numpy_version }}" >> $GITHUB_STEP_SUMMARY
+      echo "miniconda_version: ${{ steps.arguments.outputs.miniconda_version }}" >> $GITHUB_STEP_SUMMARY
+      echo "skare3_branch: ${{ steps.arguments.outputs.skare3_branch }}" >> $GITHUB_STEP_SUMMARY
+      echo "channel: ${{ steps.arguments.outputs.channel }}" >> $GITHUB_STEP_SUMMARY
+      echo "platform: ${{ steps.arguments.outputs.platform }}" >> $GITHUB_STEP_SUMMARY
   - name: Show Directory
     shell: bash
     run: |
