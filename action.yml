@@ -59,9 +59,6 @@ branding:
 
 runs:
   using: "composite"
-  defaults:
-    run:
-      shell: bash -l {0}
   steps:
   - name: Show Directory
     shell: bash
@@ -105,9 +102,11 @@ runs:
       ref: ${{ inputs.skare3_branch }}
       path: skare3
   - name: Update Conda Environment
+    shell: bash -l {0}
     run:
       conda env update -n conda-build -f ./skare3/build-environment.yml
   - name: Install ska_helpers
+    shell: bash -l {0}
     run: |
       conda search ska_helpers
       err=$?
@@ -120,8 +119,10 @@ runs:
       then ${CONDA_EXE} install testr
       fi
   - name: Env List
+    shell: bash -l {0}
     run: conda list
   - name: Build Package
+    shell: bash -l {0}
     run: |
       arch_arg=`if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then echo; else echo '--arch-specific'; fi`
       python ${GITHUB_ACTION_PATH}/files/build.py $arch_arg ${{ inputs.repository }} --tag ${{ inputs.tag }} --python ${{ inputs.python_version }} --numpy ${{ inputs.numpy_version }} --skare3-branch ${{ inputs.skare3_branch }} -c https://ska:${{ inputs.CONDA_PASSWORD }}@cxc.cfa.harvard.edu/mta/ASPECT/ska3-conda/${{ inputs.channel }} -c conda-forge
@@ -131,6 +132,7 @@ runs:
       GIT_ASKPASS: ${{ github.action_path }}/files/git_pass.py
       GIT_PASSWORD: ${{ inputs.CHANDRA_XRAY_TOKEN }}
   - name: Summary
+    shell: bash -l {0}
     run: |
       files=`find  builds/noarch/ builds/linux-64/ builds/osx-64/ builds/win-64/ -not -name \*repodata\* -not -name index.html -not -name .ensure-non-empty-dir -type f`
       echo "## Packages Built:" >> $GITHUB_STEP_SUMMARY
