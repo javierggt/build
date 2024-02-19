@@ -42,6 +42,11 @@ inputs:
     required: false
     type: string
     default: flight
+  platform:
+    description: Platform to build for
+    required: false
+    type: string
+    default: ubuntu-latest
   CONDA_PASSWORD:
     required: true
   CHANDRA_XRAY_TOKEN:
