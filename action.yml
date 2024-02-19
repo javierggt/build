@@ -57,7 +57,6 @@ runs:
   steps:
   - name: Fetch
     uses: actions/checkout@v3
-    shell: bash -l {0}
   - name: Show Inputs
     if: ${{ (matrix.os == 'ubuntu-latest') || !inputs.noarch }}
     shell: bash -l {0}
@@ -75,7 +74,6 @@ runs:
       echo token: \'${{ inputs.token }}\'
   - name: Fetch Skare3
     uses: actions/checkout@v3
-    shell: bash -l {0}
     with:
       repository: sot/skare3
       ref: ${{ inputs.skare3_branch }}
