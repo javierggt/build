@@ -145,6 +145,10 @@ runs:
   - name: Update Conda Environment
     shell: bash -l {0}
     run:
+      cat ./skare3/build-environment.yml
+  - name: Update Conda Environment
+    shell: bash -l {0}
+    run:
       conda env update -n conda-build -f ./skare3/build-environment.yml
   - name: List Conda Environment
     shell: bash -l {0}
