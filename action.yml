@@ -89,15 +89,15 @@ runs:
   - id: arguments
     shell: bash -l {0}
     run: |
-      echo "repository: ${{ fromJson(steps.argument_parser.outputs.arguments).repository }}" >> $GITHUB_OUTPUT
-      echo "tag: ${{ fromJson(steps.argument_parser.outputs.arguments).tag }}" >> $GITHUB_OUTPUT
-      echo "noarch: ${{ fromJson(steps.argument_parser.outputs.arguments).noarch }}" >> $GITHUB_OUTPUT
-      echo "python_version: ${{ fromJson(steps.argument_parser.outputs.arguments).python_version }}" >> $GITHUB_OUTPUT
-      echo "numpy_version: ${{ fromJson(steps.argument_parser.outputs.arguments).numpy_version }}" >> $GITHUB_OUTPUT
-      echo "miniconda_version: ${{ fromJson(steps.argument_parser.outputs.arguments).miniconda_version }}" >> $GITHUB_OUTPUT
-      echo "skare3_branch: ${{ fromJson(steps.argument_parser.outputs.arguments).skare3_branch }}" >> $GITHUB_OUTPUT
-      echo "channel: ${{ fromJson(steps.argument_parser.outputs.arguments).channel }}" >> $GITHUB_OUTPUT
-      echo "platform: ${{ fromJson(steps.argument_parser.outputs.arguments).platform }}" >> $GITHUB_OUTPUT
+      echo "repository=${{ fromJson(steps.argument_parser.outputs.arguments).repository }}" >> $GITHUB_OUTPUT
+      echo "tag=${{ fromJson(steps.argument_parser.outputs.arguments).tag }}" >> $GITHUB_OUTPUT
+      echo "noarch=${{ fromJson(steps.argument_parser.outputs.arguments).noarch }}" >> $GITHUB_OUTPUT
+      echo "python_version=${{ fromJson(steps.argument_parser.outputs.arguments).python_version }}" >> $GITHUB_OUTPUT
+      echo "numpy_version=${{ fromJson(steps.argument_parser.outputs.arguments).numpy_version }}" >> $GITHUB_OUTPUT
+      echo "miniconda_version=${{ fromJson(steps.argument_parser.outputs.arguments).miniconda_version }}" >> $GITHUB_OUTPUT
+      echo "skare3_branch=${{ fromJson(steps.argument_parser.outputs.arguments).skare3_branch }}" >> $GITHUB_OUTPUT
+      echo "channel=${{ fromJson(steps.argument_parser.outputs.arguments).channel }}" >> $GITHUB_OUTPUT
+      echo "platform=${{ fromJson(steps.argument_parser.outputs.arguments).platform }}" >> $GITHUB_OUTPUT
   - shell: bash -l {0}
     run: |
       echo "## Arguments:" >> $GITHUB_STEP_SUMMARY
