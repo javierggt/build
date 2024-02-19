@@ -160,7 +160,7 @@ runs:
       use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
       python-version: ${{ inputs.python_version }}
       activate-environment: conda-build
-      channels: https://ska:${{ secrets.CONDA_PASSWORD }}@cxc.cfa.harvard.edu/mta/ASPECT/ska3-conda/${{ steps.arguments.outputs.channel }},conda-forge
+      channels: https://ska:${{ inputs.CONDA_PASSWORD }}@cxc.cfa.harvard.edu/mta/ASPECT/ska3-conda/${{ steps.arguments.outputs.channel }},conda-forge
   - name: Update Conda Environment
     shell: bash -l {0}
     run:
