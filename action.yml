@@ -152,7 +152,6 @@ runs:
       ref: ${{ steps.arguments.outputs.skare3_branch }}
       path: skare3
   - name: Setup Conda Environment
-    if: ${{ (matrix.os == 'ubuntu-latest') || !inputs.noarch }}
     uses: conda-incubator/setup-miniconda@v3
     with:
       # mamba-version: "*"
