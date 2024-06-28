@@ -217,7 +217,7 @@ def main():
         build_dir = pathlib.Path("builds")
         if not build_dir.exists():
             build_dir.mkdir()
-        for d in ["linux-64", "osx-64", "noarch", "win-64"]:
+        for d in ["linux-64", "osx-64", "osx-arm64", "noarch", "win-64"]:
             print(d)
             d_from = skare3_path / "builds" / d
             d_to = build_dir / d
@@ -239,6 +239,7 @@ def main():
         files = (
             list(build_dir.glob("linux-64/*tar.bz2*"))
             + list(build_dir.glob("osx-64/*tar.bz2*"))
+            + list(build_dir.glob("osx-arm64/*tar.bz2*"))
             + list(build_dir.glob("noarch/*tar.bz2*"))
             + list(build_dir.glob("win-64/*tar.bz2*"))
         )
