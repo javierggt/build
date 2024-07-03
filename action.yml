@@ -86,7 +86,7 @@ runs:
       echo miniconda_version: \'${{ inputs.miniconda_version }}\' >> $GITHUB_STEP_SUMMARY
       echo skare3_branch: \'${{ inputs.skare3_branch }}\' >> $GITHUB_STEP_SUMMARY
   - name: Fetch Skare3
-    uses: actions/checkout@v3
+    uses: actions/checkout@v4
     with:
       repository: ${{ inputs.skare3_repository }}
       ref: ${{ inputs.skare3_branch }}
@@ -151,13 +151,14 @@ runs:
       echo "## Packages Built:" >> $GITHUB_STEP_SUMMARY
       for f in $files; do echo "- $f" >> $GITHUB_STEP_SUMMARY; done;
   - name: Save package
-    uses: actions/upload-artifact@v2.2.4
+    uses: actions/upload-artifact@v4
     with:
-      name: conda-package
+      name: conda-package-${{ inputs.platform }}
       path: |
         builds/noarch/
         builds/linux-64/
         builds/osx-64/
+        builds/osx-arm64/
         builds/win-64/
         !builds/*/*repodata*
         !builds/*/index.html
