@@ -141,7 +141,7 @@ runs:
       python ${GITHUB_ACTION_PATH}/files/build.py $arch_arg ${{ inputs.package_name }} --tag ${{ inputs.tag }} --python ${{ inputs.python_version }} --numpy ${{ inputs.numpy_version }} --skare3-branch ${{ inputs.skare3_branch }} -c https://ska:${{ inputs.CONDA_PASSWORD }}@cxc.cfa.harvard.edu/mta/ASPECT/ska3-conda/${{ inputs.channel }} -c conda-forge
     env:
       CONDA_PASSWORD: ${{ inputs.CONDA_PASSWORD }}
-      GIT_USERNAME: ${{ inputs.git_user }
+      GIT_USERNAME: ${{ inputs.git_user }}
       GIT_ASKPASS: ${{ github.action_path }}/files/git_pass.py
       GIT_PASSWORD: ${{ inputs.git_token }}
   - name: Summary
